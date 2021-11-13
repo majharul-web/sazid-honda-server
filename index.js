@@ -27,6 +27,7 @@ async function run() {
         const userCollections = database.collection('users');
         const productCollections = database.collection('products');
         const ordersCollection = database.collection('orders');
+        const reviewsCollection = database.collection('reviews');
 
         // insert Products
         app.post('/addProducts', async (req, res) => {
@@ -139,6 +140,19 @@ async function run() {
                 isAdmin = true;
             }
             res.json({ admin: isAdmin });
+        })
+
+        // insert Reviews
+        app.post('/addReview', async (req, res) => {
+            const review = req.body;
+            const result = await reviewsCollection.insertOne(review);
+            res.send(result);
+        })
+
+        // read review
+        app.get('/reviews', async (req, res) => {
+            const result = await reviewsCollection.find({}).toArray();
+            res.send(result)
         })
 
 
